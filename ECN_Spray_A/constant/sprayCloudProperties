@@ -1,0 +1,205 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      binary;
+    class       dictionary;
+    location    "constant";
+    object      SprayCloudProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solution
+{
+    active          true;
+    coupled         true;
+    transient       yes;
+    subCycles       1;
+    cellValueSourceCorrection on;
+
+    sourceTerms
+    {
+        schemes
+        {
+            rho             explicit 1;
+            U               explicit 1;
+            Yi              explicit 1;
+            h               explicit 1;
+            radiation       explicit 1;
+        }
+    }
+
+    interpolationSchemes
+    {
+        rho             cell;
+        U               cellPoint;
+        thermo:mu       cell;
+        T               cell;
+        Cp              cell;
+        kappa           cell;
+        p               cell;
+    }
+
+    integrationSchemes
+    {
+        U               Euler;
+        T               analytical;
+    }
+}
+
+
+constantProperties
+{
+    minParcelMass   6e-13;
+    T0              363;
+
+    // place holders for rho0 and Cp0 - reset from liquid props using T0
+    rho0            698.3;      // Different measurements in experimental data, same for Cp
+    Cp0             2466.0;
+    
+    youngsModulus   1e9;    //- Young's modulus [N/m2]
+    poissonsRatio   0.35;   //- Poisson's ratio
+
+    constantVolume  false;  //- Constant volume flag - e.g. during mass transfer
+}
+
+
+subModels
+{
+    particleForces
+    {
+        sphereDrag;
+    }
+
+    injectionModels
+    {
+        model1
+        {
+            type            coneNozzleCylinderInjection;
+            SOI             0;
+            parcelBasisType mass;
+            injectionMethod cylinder;
+            flowType        flowRateAndDischarge;
+            cylinderDiameter 450.0e-6;    // 450.0e-6;
+            cylinderHeight   180.0e-6;    // 180.0e-6;
+            cylinderOffset     0.0e-6;
+            position          (0.001 0.0 0.0); // (0 0 0);
+            direction       (1 0 0); //(0 0 1);
+            dInner          0;
+            dOuter          450e-6;
+            /* Parcels per second:
+             *    600000/1.5e-3 =  400000000 =  4e8
+             *    900000/1.5e-3 =  600000000 =  6e8
+             *   1050000/1.5e-3 =  700000000 =  7e8
+             *   1200000/1.5e-3 =  800000000 =  8e8
+             *   1500000/1.5e-3 = 1000000000 = 10e8
+             */
+            // parcelsPerSecond 337560338; //50MPa average parcel mass = 3.6e-12
+            // parcelsPerSecond 493584654; //100MPa average parcel mass = 3.6e-12
+            parcelsPerSecond 700000000; //150MPa average parcel mass = 3.6e-12
+
+             #include "$FOAM_CASE/constant/volumeFlowRateProfile_p150.foam"
+             //#include "$FOAM_CASE/constant/volumeFlowRateProfile_07ms_p150.foam"
+
+             /* theta = half cone angle
+             *
+             * \             |             /
+             *  \                         /
+             *   \<- theta ->|           /
+             *    \                     /
+             *     \         |         /
+             *      \                 /
+             *       \       |       /
+             *        \             /
+             *         \     |     /
+             *          \         /
+             *           \   |   /
+             *            \     /
+             *             \ | /
+             *             |   |
+             *             | | |
+             */
+            thetaInner      constant 0.0;
+            thetaOuter      constant 5.0;   // 6.0
+
+            sizeDistribution
+            {
+                type        fixedValue;
+
+                fixedValueDistribution
+                {
+                    value        0.5e-6;
+                }
+            }
+        }
+    }
+
+    dispersionModel none;
+
+    patchInteractionModel none;
+
+    heatTransferModel RanzMarshall;
+
+    compositionModel singlePhaseMixture;
+
+    phaseChangeModel liquidEvaporationBoil;
+
+    surfaceFilmModel none;
+
+    atomizationModel none; // none | levichAtomization | CABAtomization
+
+    breakupModel     none; // ReitzKHRT | ETAB | CAB | PilchErdman
+
+    stochasticCollisionModel none;
+
+    radiation       off;
+
+    RanzMarshallCoeffs
+    {
+        BirdCorrection  true;
+    }
+
+    singlePhaseMixtureCoeffs
+    {
+        phases
+        (
+            liquid
+            {
+                C12H26               1; //NC12H26               1;
+            }
+        );
+    }
+
+    liquidEvaporationBoilCoeffs
+    {
+        enthalpyTransfer enthalpyDifference;
+        activeLiquids    ( C12H26 );
+    }
+
+    ETABCoeffs
+    {
+        defaultCoeffs   yes;
+    }
+
+    ReitzKHRTCoeffs
+    {
+        defaultCoeffs   no;
+        B0              0.61;
+        B1              7;
+        Ctau            1.0;
+        CRT             0.1;
+        msLimit         0.3;
+        WeberLimit      6.0;
+    }
+}
+
+cloudFunctions
+{}
+
+// ************************************************************************* //

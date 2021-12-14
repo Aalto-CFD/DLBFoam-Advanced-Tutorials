@@ -1,0 +1,93 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     reactingFoam;
+
+startFrom       latestTime;
+
+stopAt          endTime;
+
+endTime         0.25;
+
+deltaT          1e-06;
+
+adjustTimeStep  yes;
+
+maxCo           0.4;
+
+maxDeltaT       1e-06;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.01;
+
+writePrecision  12;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable false;
+
+OptimisationSwitches
+{
+    fileHandler     collated;
+}
+
+functions
+{
+    sandiad_average
+    {
+        functionObjectLibs ( "libfieldFunctionObjects.so" );
+        type            fieldAverage;
+        enabled         true;
+        timeStart       0.1;
+        writeControl    writeTime;
+        writeInterval   1;
+        executeControl  timeStep;
+        executeInterval 1;
+        restartOnRestart false;
+        restartOnOutput false;
+        periodicRestart false;
+        restartPeriod   0;
+        fields          ( U { mean on ; prime2Mean on ; base time ; } T { mean on ; prime2Mean on ; base time ; } Z { mean on ; prime2Mean on ; base time ; } CH4 { mean on ; prime2Mean on ; base time ; } O2 { mean on ; prime2Mean on ; base time ; } CO2 { mean on ; prime2Mean on ; base time ; } H2O { mean on ; prime2Mean on ; base time ; } CO { mean on ; prime2Mean on ; base time ; } H2 { mean on ; prime2Mean on ; base time ; } OH { mean on ; prime2Mean on ; base time ; } );
+    }
+    frequentWrite
+    {
+        functionObjectLibs ( "libutilityFunctionObjects.so" );
+        type            writeObjects;
+        enabled         true;
+        objects         ( "T" "OH" "CH4" "O2" "H2O" "CO2" "U" );
+        writeControl    adjustableRunTime;
+        writeInterval   0.001;
+    }
+}
+
+libs (
+    "libchemistryModel_DLB.so"
+    "libODE_DLB.so"
+    "$FOAM_CASE/constant/foam_mech/libc_pyjac.so"
+);
+
+
+// ************************************************************************* //

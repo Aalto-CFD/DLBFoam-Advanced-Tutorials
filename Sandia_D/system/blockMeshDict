@@ -1,0 +1,142 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+/*
+
+                         3------------------2
+                        /|                 /|
+                       / |                / |
+                     /   |              /   |
+                    7------------------6    |
+                    |    |             |    |
+    (0,0,0)inlet -> |    x2            |    | -> outlet
+                    |    |             |    |
+                    |    0---x1--------|----1
+                    |   /              |   /
+                    | x3               |  /
+                    |/                 |/
+                    4------------------5
+
+
+
+*/
+
+
+// Axis x1 from 0 to 1
+// Axis x2 from 1 to 2
+// Axis x3 right hand rule x1->x2
+
+convertToMeters 0.001;
+
+// Domain & Mesh: for snappyHexMesh
+// 80Dx40D          576mm x 288mm
+// 96 x 98 x 98 (after ref -> ~7M cells)
+// 0.153M cells    (6.00mm x 2.94mm x 2.94mmm), aspect ratio x/y ~= 2.0
+//                 (1.2/D  x 2.45/D x 2.45/D )
+// Goal after refinement (3 levels: 2x2x2) ~20/D
+L 576;
+pos_r_base 144;
+neg_r_base -144;
+pos_r_top 144;
+neg_r_top -144;
+Na 96;
+Nr 49;
+
+Gr 1;
+
+vertices
+(
+    ( 0  $neg_r_base $neg_r_base) // 0
+    ( $L $neg_r_top  $neg_r_top ) // 1
+    ( $L $pos_r_top  $neg_r_top ) // 2
+    ( 0  $pos_r_base $neg_r_base) // 3
+    ( 0  $neg_r_base $pos_r_base) // 4
+    ( $L $neg_r_top  $pos_r_top ) // 5
+    ( $L $pos_r_top  $pos_r_top ) // 6
+    ( 0  $pos_r_base $pos_r_base) // 7
+
+    // Centerline (x axis)
+    ( 0  0 0) // 8
+    ( $L 0 0) // 9
+
+    ( 0  0           $neg_r_base) // 10  left
+    ( 0  $pos_r_base 0          ) // 11  top
+    ( 0  0           $pos_r_base) // 12  right
+    ( 0  $neg_r_base 0          ) // 13  bottom
+    ( $L 0           $neg_r_top ) // 14
+    ( $L $pos_r_top  0          ) // 15
+    ( $L 0           $pos_r_top ) // 16
+    ( $L $neg_r_top  0          ) // 17
+);
+
+blocks
+(
+    hex (0 1 14 10 13 17 9 8) ($Na $Nr $Nr) simpleGrading (1 $Gr $Gr)
+    hex (10 14 2 3 8 9 15 11) ($Na $Nr $Nr) simpleGrading (1 $Gr $Gr)
+    hex (8 9 15 11 12 16 6 7) ($Na $Nr $Nr) simpleGrading (1 $Gr $Gr)
+    hex (13 17 9 8 4 5 16 12) ($Na $Nr $Nr) simpleGrading (1 $Gr $Gr)
+);
+
+edges
+(
+);
+
+boundary // faces must look outside
+(
+    wallInlet // inlets will be extracted by topoSet and createPatch
+    {
+        type patch;
+        faces
+        (
+            (0 13 8 10)
+            (10 3 11 8)
+            (8 11 7 12)
+            (13 8 12 4)
+        );
+    }
+    wallOutside
+    {
+        type wall;
+        faces
+        (
+            (0 10 14 1)
+            (10 3 2 14)
+            (3 11 15 2)
+            (11 7 6 15)
+            (7 12 16 6)
+            (12 4 5 16)
+            (4 13 17 5)
+            (13 0 1 17)
+        );
+    }
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (1 14 9 17)
+            (14 2 15 9)
+            (9 15 6 16)
+            (17 9 16 5)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //

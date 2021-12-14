@@ -1,0 +1,41 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDictDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // Select based on surface
+    {   
+        name   refineCells;
+        type   cellSet;
+        action new;
+        source surfaceToCell;
+        sourceInfo
+        {   
+            file            "constant/triSurface/cone_3_scaled_final.stl";
+            outsidePoints   ((0 0 0.02));    // definition of outside
+            includeCut      true;              // cells cut by surface
+            includeInside   true;              // cells not on outside of surf
+            includeOutside  false;              // cells on outside of surf
+            nearDistance    -1;                 // cells with centre near surf
+                                        // (set to -1 if not used)
+            curvature       -100;                // cells within nearDistance
+                                        // and near surf curvature
+                                        // (set to -100 if not used)
+        }   
+    }   
+);
+// ************************************************************************* //
+

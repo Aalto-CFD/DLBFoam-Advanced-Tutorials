@@ -1,0 +1,189 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     sprayFoam;
+
+startFrom       startTime; //latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         0.00070005; //1.5e-3;
+
+deltaT          5e-8; //1e-7;
+
+writeControl    adjustableRunTime;
+
+writeInterval   5e-5;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  9;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   9;
+
+adjustTimeStep  no; //yes;
+
+maxCo           0.5;
+
+maxDeltaT	1e-6;
+
+runTimeModifiable yes;
+
+DebugSwitches
+{
+    SolverPerformance   0;
+}
+
+// Enabling collated format
+OptimisationSwitches
+{
+    //- Parallel IO file handler
+    // uncollated (default), collated or masterUncollated
+    fileHandler collated;
+
+    //- collated: thread buffer size for queued file writes.
+    // If set to 0 or not sufficient for the file size threading is not used.
+    // Default: 2e9
+    maxThreadFileBufferSize 0;
+
+    //- masterUncollated: non-blocking buffer size.
+    // If the file exceeds this buffer size scheduled transfer is used.
+    // Default: 2e9
+    maxMasterFileBufferSize 2e9;
+}
+
+
+libs
+(
+        "libchemistryModel_DLB.so"
+        "libODE_DLB.so"
+        "$FOAM_CASE/constant/foam_mech/libc_pyjac.so"
+        // "libspraySubmodels_pex.so"
+        "libconeCylinderInjection.so"
+        // "libmixtureFraction.so"
+);
+
+
+functions
+{
+    writeObjectsRho
+    {
+        type        writeObjects;
+        libs        ("libutilityFunctionObjects.so");
+        objects     ( rho );
+        writeOption autoWrite;
+        executeControl  adjustableRunTime;
+        executeInterval 5e-8;
+        writeControl    adjustableRunTime;
+        writeInterval   5e-8;
+    }
+
+    // Qdot
+    // {
+    //     functionObjectLibs ("libfieldFunctionObjects.so");
+    //     type            Qdot;
+    //     executeControl  adjustableRunTime;
+    //     executeInterval 5e-5;
+    //     writeControl    adjustableRunTime;
+    //     writeInterval   $writeInterval;
+    // }
+
+    Integral_Qdot
+    {
+        libs            ("libfieldFunctionObjects.so");   // SHOULD BE THE SAME AS functionObjectLibs
+        //functionObjectLibs ("libfieldFunctionObjects.so");
+        type            volFieldValue;
+        // Mandatory entries (runtime modifiable)
+        fields          (Qdot);
+        operation	volIntegrate;
+        regionType	all;
+        writeFields     false;
+        executeControl  adjustableRunTime;
+        executeInterval $writeInterval;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+
+    // Z
+    // {
+    //     // functionObjectLibs ("libmixtureFraction.so"); //("libfieldFunctionObjects_pex.so");
+    //     functionObjectLibs ("libmixtureFraction.so");
+    //     type         Z;
+    //     executeControl  adjustableRunTime;
+    //     executeInterval 1e-6;
+    //     writeControl    adjustableRunTime;
+    //     writeInterval   $writeInterval;
+    // }
+
+    fieldAverages
+    {
+        type            fieldAverage;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+        timeStart       0.9e-3;
+        timeEnd         1.5e-3;
+        resetOnRestart  false;
+        resetOnOutput false;
+        fields
+        (
+            OH
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+
+            CH2O
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+
+            U
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+
+            C12H26
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+
+            Z
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+        );
+    }
+}
+
+// ************************************************************************* //

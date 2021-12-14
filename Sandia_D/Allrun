@@ -1,0 +1,26 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Set number of cores
+N_PROCS=$(grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}')
+foamDictionary -entry numberOfSubdomains system/decomposeParDict -set $N_PROCS
+
+# Set application name
+application=$(getApplication)
+
+# Generate turbulence parameters (set inlet BC for velocity)
+cp -r 0.orig 0
+python generate_turbulence_params.py
+
+runApplication blockMesh
+runApplication snappyHexMesh -overwrite
+runApplication topoSet
+runApplication createPatch -overwrite
+runApplication decomposePar -force
+runParallel $application
+runApplication reconstructPar
+
+#------------------------------------------------------------------------------

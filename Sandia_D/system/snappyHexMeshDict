@@ -1,0 +1,124 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#includeEtc "caseDicts/mesh/generation/snappyHexMeshDict.cfg"
+
+castellatedMesh true;
+snap            false;
+addLayers       false;
+
+geometry
+{
+    refinement.stl
+    {
+        type triSurfaceMesh;
+        name refinement;
+        regions
+    	{
+    		inlet {name inlet;}
+    		outlet {name outlet;}
+            side {name side;}
+        }
+    }
+};
+
+castellatedMeshControls
+{
+    // Refinement parameters
+    // Refinement parameters
+    maxLocalCells 15000000;
+    maxGlobalCells 20000000;
+    minRefinementCells 10;
+    nCellsBetweenLevels 1; // 1 -> normal 1:2
+
+    refinementSurfaces
+    {
+        // refinement.stl
+        // {
+        //     level (1 1);
+        //
+        //     regions
+        //     {
+        //         inlet       { level (1 1); patchInfo { type patch; }}
+        //         outlet      { level (1 1); patchInfo { type patch; }}
+        //         side        { level (1 1); patchInfo { type patch; }}
+        //     }
+        // }
+    }
+
+    refinementRegions
+    {
+        refinement
+        {
+            mode inside;
+            levels ((1 3));
+        }
+    }
+
+    // Resolve sharp angles
+    resolveFeatureAngle 24;
+
+    locationInMesh (1e-5 1e-5 1e-5); // Offset from (0 0 0) to avoid
+                                     // coinciding with face or edge
+}
+
+snapControls
+{
+    nSmoothPatch 4; // or 15;
+    tolerance 1.2;  // or 0.1;
+    nSolveIter 180;  // or 300;
+    nRelaxIter 6;   // or 15
+
+    nFeatureSnapIter 5;
+    implicitFeatureSnap false;
+    explicitFeatureSnap false;
+    multiRegionFeatureSnap false;
+}
+
+addLayersControls
+{
+    // Are the thickness parameters below relative to the undistorted
+    // size of the refined cell outside layer (true) or absolute sizes (false).
+    relativeSizes false;
+
+    // Per final patch (so not geometry!) the layer information
+    layers
+    {
+
+    }
+
+    expansionRatio 1.0;
+    finalLayerThickness 0.3;
+    minThickness 0.1;
+    nGrow 0;
+    featureAngle 60;
+    slipFeatureAngle 30;
+    nRelaxIter 3;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedianAxisAngle 90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+}
+
+
+
+mergeTolerance 1e-6;
+
+// ************************************************************************* //

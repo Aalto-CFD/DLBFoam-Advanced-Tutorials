@@ -1,0 +1,168 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     reactingFoam;
+
+startFrom       latestTime;
+
+startTime       startTime;
+
+stopAt          endTime;
+
+endTime         5.0e-4;
+
+deltaT          1e-9;
+
+writeControl    adjustableRunTime;
+
+writeInterval   1.0e-4;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  12;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   12;
+
+runTimeModifiable true;
+
+adjustTimeStep  yes;
+
+maxCo           0.6;
+
+
+OptimisationSwitches
+{
+
+    //- Parallel IO file handler
+    // uncollated (default), collated or masterUncollated
+    fileHandler collated;
+
+    //- collated: thread buffer size for queued file writes.
+    // If set to 0 or not sufficient for the file size threading is not used.
+    // Default: 2e9
+    maxThreadFileBufferSize 2e9;
+
+    //- masterUncollated: non-blocking buffer size.
+    // If the file exceeds this buffer size scheduled transfer is used.
+    // Default: 2e9
+    maxMasterFileBufferSize 2e9;
+}
+
+
+functions
+{
+    cellcentreWrite
+    {
+        type writeCellCentres;
+	libs ("libfieldFunctionObjects.so");
+	writeControl     adjustableRunTime;
+        writeInterval 5e-6;
+    }
+    heatRelease
+    {
+     	type Qdot;
+        libs ("libfieldFunctionObjects.so");
+        writeControl     adjustableRunTime;
+        writeInterval 5e-6;
+    }
+    // Z
+    // {
+    //     functionObjectLibs ("libmixtureFraction.so");
+    //     type         Z;
+    //     writeControl    adjustableRunTime;
+    //     writeInterval   5e-6;
+    // }
+    frequentWrite
+    {
+	type writeObjects;
+	functionObjectLibs ("libutilityFunctionObjects.so");
+	objects
+	(
+        "NC12H26"
+	    "C12H25O2"
+        "CH4"
+        "H2"
+        "O2"
+	    "HO2"
+        "H2O"
+        "CO2"
+        "T"
+        "U"
+        "p"
+        "OH"
+	);
+	writeControl     adjustableRunTime;
+	writeInterval	  5e-6;
+    }
+    setDeltaT
+    {
+        functionObjectLibs ( "libutilityFunctionObjects.so" );
+        enabled         true;
+        type            coded;
+        name    	setDeltaT;
+        writeControl   timeStep;
+        writeInterval 1;
+
+        codeOptions
+        #{
+            -I$(LIB_SRC)/meshTools/lnInclude
+        #};
+
+        codeExecute
+        #{
+    	   const volScalarField& T = mesh().lookupObject<volScalarField>("T");
+           const Time& runTime = mesh().time();
+            if (max(T).value() >= 1500)
+            {
+		scalar CFL = 0.1;
+		Info << "CFL = "<<CFL<<" threshold applied."<<endl;
+                const_cast<Time&>(runTime).setDeltaT
+                (
+                    runTime.userTimeToTime(min(runTime.deltaT().value(),1e-7))
+                );
+            }
+	   if (min(T).value() >= 2000 || max(T).value() >= 3000)
+           {
+		Info << "Reached temperature limit."<<endl;
+		Info << "Simulation Ends Here."<<endl;
+                const_cast<Time&>(runTime).writeAndEnd();
+
+	   }
+
+       #};
+    }
+}
+
+libs
+(
+        "libchemistryModel_DLB.so"
+        "libODE_DLB.so"
+        "$FOAM_CASE/constant/foam_mech/libc_pyjac.so"
+ 	    // "libmixtureFraction.so"
+);
+
+
+// ************************************************************************* //
+
+
+// ************************************************************************* //

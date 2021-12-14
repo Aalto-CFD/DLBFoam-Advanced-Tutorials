@@ -1,0 +1,15 @@
+**/[1-9]*
+!2D*
+!3D*
+**/[0-9]*.[0-9]*
+**/processor*
+**/postProcessing
+**/constant/polyMesh
+**/loadBal
+**/dynamicCode
+
+log.*
+
+
+*.pyc
+__pycache__

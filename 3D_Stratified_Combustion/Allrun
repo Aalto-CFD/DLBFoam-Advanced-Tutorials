@@ -1,0 +1,26 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Unpack initial fields for U and p
+echo "Unpacking 0/U.tar.xz and 0/p.tar.xz..."
+tar xf 0/U.tar.xz -C 0
+tar xf 0/p.tar.xz -C 0
+
+
+# Set number of cores
+N_PROCS=$(grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}')
+foamDictionary -entry numberOfSubdomains system/decomposeParDict -set $N_PROCS
+
+# Set application name
+application=$(getApplication)
+
+runApplication blockMesh
+# runApplication foamFormatConvert
+runApplication decomposePar -force
+runParallel $application
+runApplication reconstructPar
+
+#------------------------------------------------------------------------------

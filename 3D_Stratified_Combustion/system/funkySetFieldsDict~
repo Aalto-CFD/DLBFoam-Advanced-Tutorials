@@ -1,0 +1,120 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      funkySetFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+expressions
+(
+
+/*
+    TSmooth
+    {
+        field T;
+        create false;
+        variables
+        (
+	    "Lref=0.0001;"
+            "z0=0;"
+            "zmax1=0.00001;"
+            "Tmin=363;"
+            "Tmax=900;"
+            "fluc=1;"
+        );
+        expression "(Tmax+Tmin)/2 + ((Tmax-Tmin)/2) * sin(1*(2*pi)*(pos().x)/Lref) * fluc";
+        condition "(pos().z > z0) && (pos().z < zmax1)";
+        dimension [0 0 0 1 0 0 0];
+    }
+*/
+
+    NDOD
+    {
+        field NC12H26;
+        create false;
+        variables
+        (
+	    "Lref=0.0001;"
+            "z0=0;"
+            "zmax1=0.00001;"
+            "Ymax=0;"
+            "Ymin=0.125*2;"
+            "fluc=1;"
+        );
+        expression "(Ymax+Ymin)/2 + ((Ymax-Ymin)/2) * sin(1*(2*pi)*(pos().x)/Lref) * fluc";
+        condition "(pos().z > z0) && (pos().z < zmax1)";
+        dimension [0 0 0 0 0 0 0];
+    }
+
+
+    CH3OHsmooth
+    {
+        field CH3OH;
+        create false;
+        variables
+        (
+	    "Lref=0.0001;"
+            "z0=0;"
+            "zmax1=0.00001;"
+            "Ymax=0.1094;"
+            "Ymin=(1-0.125*2)*Ymax;"
+            "fluc=1;"
+        );
+        expression "(Ymax+Ymin)/2 + ((Ymax-Ymin)/2) * sin(1*(2*pi)*(pos().x)/Lref) * fluc";
+        condition "(pos().z > z0) && (pos().z < zmax1)";
+        dimension [0 0 0 0 0 0 0];
+    }
+
+    O2smooth
+    {
+        field O2;
+        create false;
+        variables
+        (
+	    "Lref=0.0001;"
+            "z0=0;"
+            "zmax1=0.00001;"
+            "Ymax=0.2298;"
+            "Ymin=(1-0.125*2)*Ymax;"
+            "fluc=1;"
+        );
+        expression "(Ymax+Ymin)/2 + ((Ymax-Ymin)/2) * sin(1*(2*pi)*(pos().x)/Lref) * fluc";
+        condition "(pos().z > z0) && (pos().z < zmax1)";
+        dimension [0 0 0 0 0 0 0];
+    }
+
+    N2smooth
+    {
+        field N2;
+        create false;
+        variables
+        (
+	    "Lref=0.0001;"
+            "z0=0;"
+            "zmax1=0.00001;"
+            "Ymax=0.6608;"
+            "Ymin=(1-0.125*2)*Ymax;"
+            "fluc=1;"
+        );
+        expression "(Ymax+Ymin)/2 + ((Ymax-Ymin)/2) * sin(1*(2*pi)*(pos().x)/Lref) * fluc";
+        condition "(pos().z > z0) && (pos().z < zmax1)";
+        dimension [0 0 0 0 0 0 0];
+    }
+
+);
+
+
+
+
+// ************************************************************************* //
+

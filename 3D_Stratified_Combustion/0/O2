@@ -1,0 +1,117 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.4.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      O2;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField  #codeStream
+{
+
+    code
+    #{
+
+        const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+        const fvMesh& mesh = refCast<const fvMesh>(d.db());
+        const vectorField& CC = mesh.C(); //cell center
+        
+         
+        scalarField O2(mesh.nCells());
+        scalar O2_i = 0.1669;
+
+        scalar L_ref = 0.001;           
+
+        forAll(CC,cellI)
+        {
+        	scalar x = CC[cellI].x(); 
+        	scalar y = CC[cellI].y();          
+        	scalar z = CC[cellI].z(); 
+
+            O2[cellI] = O2_i;
+            
+            if (sqrt(pow(x-L_ref/2,2) + pow(y-L_ref/2,2) + pow(z-L_ref/2,2))<sqrt(pow(L_ref/6,2))) // SQRT[(x-x0)^2+(y-y0)^2+(z-z0)^2] < SQRT[R^2] ; x0 = y0 = z0 = L_ref/2; R = L_ref/6
+            {
+                O2[cellI] = 0.0;
+            }            
+        }
+        
+        writeEntry(os,"",O2); 
+    #};
+
+    //! Optional:
+    codeInclude
+    #{
+
+        #include "fvCFD.H"
+
+    #};
+
+
+    codeOptions
+    #{
+
+        -I$(LIB_SRC)/finiteVolume/lnInclude \
+        -I$(LIB_SRC)/meshTools/lnInclude
+
+    #};
+
+
+    //! libs:
+
+    codeLibs
+    #{
+        -lmeshTools \
+        -lfiniteVolume
+    #};
+
+};
+
+boundaryField
+{
+    upperBoundary
+    {
+        type            cyclic;
+    }
+
+    lowerBoundary
+    {
+        type            cyclic;
+    }
+
+    leftBoundary
+    {
+        type            cyclic;
+    }
+
+    rightBoundary
+    {
+        type            cyclic;
+    }
+
+    frontBoundary
+    {
+        type            cyclic;
+    }
+
+    backBoundary
+    {
+        type            cyclic;
+    }
+
+}
+
+
+
+// ************************************************************************* //

@@ -1,0 +1,124 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    rho
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    rhoFinal
+    {
+        $rho;
+        relTol          0;
+    }
+
+    "(U|k|epsilon)"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-08;
+        relTol          0.001;
+    }
+
+    "(U|k|epsilon)Final"
+    {
+        $U;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    p
+    {
+        solver          PBiCGStab;
+        preconditioner  DIC;
+        tolerance       1e-9;
+        relTol          0.001;
+    }
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    "(pcorr|pcorrFinal)"
+    {
+        $p;
+    }
+
+    "(Yi)"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-8;
+        relTol          0.1;
+    }
+
+    h
+    {
+        $Yi;
+        relTol          0.1;
+    }
+
+    hFinal
+    {
+        $Yi;
+    }
+
+    YiFinal
+    {
+        $Yi;
+    }
+
+    "G.*"
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-5;
+        relTol          0.1;
+    }
+
+    GFinal
+    {
+        $G;
+        relTol          0;
+    }
+
+}
+
+PIMPLE
+{
+    nOuterCorrectors 2;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 1;
+    momentumPredictor false;
+}
+
+relaxationFactors
+{
+    equations
+    {
+        ".*"       1;
+    }
+}
+
+// ************************************************************************* //
