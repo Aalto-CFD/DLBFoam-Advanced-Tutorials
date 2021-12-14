@@ -1,4 +1,4 @@
-# Sandia flame D
+# ECN Spray A
 
 This is a demonstration of the capabilities of the DLBFoam on the well-known spray combustion test case [ENC Spray A](https://ecn.sandia.gov/diesel-spray-combustion/target-condition/spray-ab/) experimental setup, published in Ref.[[1]](#Morev2022)
 
