@@ -3,7 +3,7 @@ Advanced combustion tutorial cases for DLBFoam library for OpenFOAM. These cases
 
 ## Citation
 
-If you use our model, please cite original work, introducing these test cases [[1]](#1). If you use DLBFoam in your development, please also cite [corresponding literature for DLBFoam](https://github.com/Aalto-CFD/DLBFoam#citation)
+If you use our tutorial cases, please cite original work introducing these test cases [[1]](#1). If you use DLBFoam in your development, please also cite [corresponding literature for DLBFoam](https://github.com/Aalto-CFD/DLBFoam#citation)
 
 ## References
  
