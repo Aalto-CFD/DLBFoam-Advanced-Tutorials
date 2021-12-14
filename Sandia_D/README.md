@@ -90,6 +90,7 @@ The Sandia flame D case in this repository was used to benchmark and validate DL
 
 <p align="center">
   <img src="doc/validation_sandiaD.png" />
+  <img src="doc/validation_sandiaD_Tfield.png" />
 </p>
 
 **Total speed-up compared to standard OpenFOAM solver was around 13.5.**
