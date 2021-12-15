@@ -1,4 +1,4 @@
-# 3D stratified combustion
+# 2D shear layer
 
 This is a 2D shear layer test case demonstrating capabilities of the DLBFoam, published in Ref.[[1]](#Morev2022)
 
