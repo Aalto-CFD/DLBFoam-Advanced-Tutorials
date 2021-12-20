@@ -1,10 +1,10 @@
 # 3D stratified combustion
 
-This is a 3D stratified combustion test case demonstrating capabilities of the DLBFoam, published in Ref.[[1]](#Morev2022)
+This is a 3D stratified test case demonstrating capabilities of the DLBFoam, published in Ref.[[1]](#Morev2022)
 
 ## Case description
 
-E.g.: The case represents ... Composition is... Dimensions are... Conditions are...
+The case represents a simple approach to study dual-fuel stratified combustion of diesel/methane with a direct relevance to flame initiation in diesel spray assisted ignition of methane. 
 
 <p align="center">
   <img src="doc/schematic_3dcomb.png" />
@@ -12,21 +12,21 @@ E.g.: The case represents ... Composition is... Dimensions are... Conditions are
 
 ## Numerical setup
 
+Pure $n$-dodecane (diesel surrogate) is initially constrained in a blob in the middle of the domain with a diameter and the ambient gas consists of lean premixed methane, oxidizer and EGR (phi=0.5).The computational domain is a 3D cube with  and a side length of 1 mm. The initial pressure is set at 60 bar and the initial temperature is homogeneous within the entire computational domain at 800 K. Turbulence is initialized using Taylor-Green-Vortex (TGV) structure, which is generated in a separate non-reactive 3D simulation until the gradient of total kinetic energy reaches its peak. Velocity and pressure fields are mapped to the reactive case as initial fields. The estimated Reynolds number at the start of reacting simulation is around 1000.
+
 ### Mesh
 
-Describe important details about your mesh and its generation here. E.g. mesh is 3D, Cartesian... Refinement is done using e.g. ```refineMesh```...
+Mesh is 3D, Cartesian and uniform. The grid size is 4 micro-meter with 256 grid points along each direction, to capture the flame with at least 10 grid points within the laminar flame thickness.
 
 ### Boundary conditions
 
-Describe important details about your mesh and its generation here. E.g. inlet boundary condition for velocity is ```fixedValue```...
+Periodic boundary conditions are considered in all directions.
 
 ### Chemistry
 
 A Yao chemical kinetics mechanism is used [[2]](#Yao2016), compiled for the use with DLBFoam.
 
 ### Other details
-
-Example of other details:  
 
 Implicit Large-Eddy Simulation approach is used here, i.e. LES-like mesh is used with filtered equations, but no explicit TCI model is present (in [constant/combustionProperties](constant/combustionProperties) entry ```combustionModel``` is set to laminar).
 
@@ -66,7 +66,7 @@ reconstructPar
 
 ## Post processing
 
-In order to to post-process the simulation data, you can...
+In order to to post-process the simulation data, you can use paraview to observe dutplanes of different fields.
 
 <p align="center">
   <img src="doc/image_3dcomb.png" />
