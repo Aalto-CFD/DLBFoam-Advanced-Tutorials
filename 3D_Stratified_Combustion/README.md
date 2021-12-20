@@ -12,7 +12,7 @@ The case represents a simple approach to study dual-fuel stratified combustion o
 
 ## Numerical setup
 
-Pure $n$-dodecane (diesel surrogate) is initially constrained in a blob in the middle of the domain with a diameter and the ambient gas consists of lean premixed methane, oxidizer and EGR (phi=0.5).The computational domain is a 3D cube with  and a side length of 1 mm. The initial pressure is set at 60 bar and the initial temperature is homogeneous within the entire computational domain at 800 K. Turbulence is initialized using Taylor-Green-Vortex (TGV) structure, which is generated in a separate non-reactive 3D simulation until the gradient of total kinetic energy reaches its peak. Velocity and pressure fields are mapped to the reactive case as initial fields. The estimated Reynolds number at the start of reacting simulation is around 1000.
+Pure $n$-dodecane (diesel surrogate) is initially constrained in a blob in the middle of the domain with a diameter and the ambient gas consists of lean premixed methane, oxidizer and EGR (phi=0.5).The computational domain is a 3D cube with  and a side length of 1 mm. The initial pressure is set at 60 bar and the initial temperature is homogeneous within the entire computational domain at 800 K. Turbulence is generated using Taylor-Green-Vortex (TGV) structure in a separate non-reactive 3D simulation until the gradient of total kinetic energy reaches its peak. Velocity and pressure fields are mapped to the reactive case as initial fields (by copying the 0 folder). The estimated Reynolds number at the start of reacting simulation is around 1000.
 
 ### Mesh
 
