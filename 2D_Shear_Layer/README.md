@@ -18,7 +18,7 @@ The number of grid points in both directions is 300 which is based on the pre-es
 methane premixed flame at the corresponding most reactive mixture fraction, p = 60 bar, and T reactants = 800 K (flame thickness ≈ 50 μm) to resolve the flame by 10 grid points.
 ### Boundary conditions
 
-The relative velocity, temperature, and species composition of the n-dodecane jet are specified by a hyperbolic profile function. 
+The relative velocity, temperature, and species composition of the n-dodecane jet are specified by a tan hyperbolic profile function. 
 
 ### Chemistry
 
