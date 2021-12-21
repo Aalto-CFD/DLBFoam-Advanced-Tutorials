@@ -4,7 +4,7 @@ This is a 2D shear layer test case demonstrating capabilities of the DLBFoam, pu
 
 ## Case description
 
-E.g.: The case represents ... Composition is... Dimensions are... Conditions are...
+To mimic the process of n-dodecane injection in the RCCI combustion, a lean methane/air charge is assumed to be homogeneously distributed through the computational domain. 
 
 <p align="center">
   <img src="doc/schematic_2dshear.png" />
