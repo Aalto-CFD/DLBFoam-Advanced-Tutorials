@@ -14,8 +14,8 @@ The present 2D shear layer case setup mimics the process of n-dodecane injection
 
 ### Mesh
 
-Describe important details about your mesh and its generation here. E.g. mesh is 2D, Cartesian... Size...
-
+The number of grid points in both directions is 300 which is based on the pre-estimated laminar flame thickness for n-dodecane-
+methane premixed flame at the corresponding most reactive mixture fraction, p = 60 bar, and T reactants = 800 K (flame thickness ≈ 50 μm) to resolve the flame by 10 grid points.
 ### Boundary conditions
 
 Describe important details about your mesh and its generation here. E.g. inlet boundary condition for velocity is ```fixedValue```...
