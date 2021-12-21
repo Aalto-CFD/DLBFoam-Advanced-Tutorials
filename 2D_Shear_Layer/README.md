@@ -14,11 +14,11 @@ The present 2D shear layer case setup mimics the process of n-dodecane injection
 
 ### Mesh
 
-The number of grid points in both directions is 300 which is based on the pre-estimated laminar flame thickness for n-dodecane-
+The number of grid points in both directions is 300 which is based on the pre-estimated laminar flame thickness for n-dodecane/
 methane premixed flame at the corresponding most reactive mixture fraction, p = 60 bar, and T reactants = 800 K (flame thickness ≈ 50 μm) to resolve the flame by 10 grid points.
 ### Boundary conditions
 
-Describe important details about your mesh and its generation here. E.g. inlet boundary condition for velocity is ```fixedValue```...
+The relative velocity, temperature, and species composition of the n-dodecane jet are specified by a hyperbolic profile function. 
 
 ### Chemistry
 
@@ -29,8 +29,6 @@ A Yao chemical kinetics mechanism is used [[2]](#Yao2016), compiled for the use 
 Example of other details:  
 
 Implicit Large-Eddy Simulation approach is used here, i.e. LES-like mesh is used with filtered equations, but no explicit TCI model is present (in [constant/combustionProperties](constant/combustionProperties) entry ```combustionModel``` is set to laminar).
-
-Ignition is done...
 
 In DLBFoam library, both load balancing and reference mapping are enabled. Improved ODE solution routines are also utilized.
 
