@@ -66,7 +66,9 @@ reconstructPar
 
 ## Post processing
 
-In order to to post-process the simulation data, you can...
+In order to to post-process the simulation data, you can use paraview to observe cutplanes of different fields.
+
+
 
 <p align="center">
   <img src="doc/image_2dshear.png" />
