@@ -4,7 +4,7 @@ This is a 2D shear layer test case demonstrating capabilities of the DLBFoam, pu
 
 ## Case description
 
-The present case is 2D shear layer of n-dodecane methane/air charge which mimics the process of n-dodecane injection in the RCCI combustion, a lean methane/air charge is assumed to be homogeneously distributed through the computational domain. The n-dodecane is assumed to move with a relative velocity, U, in the middle of the domain and two mixing layers develop between the two fuel streams, consquenlty inducing inhomogeneties in the composition and temperature fields.
+The present case is 2D shear layer of n-dodecane methane/air charge which mimics the process of n-dodecane injection in the RCCI combustion, a lean methane/air charge is assumed to be homogeneously distributed through the computational domain. The n-dodecane is assumed to move with a relative velocity in the middle of the domain and two mixing layers develop between the two fuel streams, consquenlty inducing inhomogeneties in the composition and temperature fields.
 
 <p align="center">
   <img src="doc/schematic_2dshear.png" />
