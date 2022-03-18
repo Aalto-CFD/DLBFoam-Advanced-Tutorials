@@ -9,7 +9,7 @@ The detailed discussion and validation of the provided tutorial cases are openly
 
 The provided tutorial cases represent the following:
 
-* [two-dimensional reacting shear layer](2D_Shear_Layer/README.md)
+* [Two-dimensional reacting shear layer](2D_Shear_Layer/README.md)
 * [Three-dimensional stratified combustion](3D_Stratified_Combustion/README.md)
 * [Engine Combustion Network Spray A](ECN_Spray_A/README.md)
 * [Sandia flame D](Sandia_D/README.md)
