@@ -81,31 +81,20 @@ subModels
     {
         model1
         {
-            type            coneNozzleCylinderInjection;
+            type            coneCylinderInjection;
             SOI             0;
             parcelBasisType mass;
             injectionMethod cylinder;
             flowType        flowRateAndDischarge;
-            cylinderDiameter 450.0e-6;    // 450.0e-6;
-            cylinderHeight   180.0e-6;    // 180.0e-6;
-            cylinderOffset     0.0e-6;
-            position          (0.001 0.0 0.0); // (0 0 0);
-            direction       (1 0 0); //(0 0 1);
-            dInner          0;
-            dOuter          450e-6;
-            /* Parcels per second:
-             *    600000/1.5e-3 =  400000000 =  4e8
-             *    900000/1.5e-3 =  600000000 =  6e8
-             *   1050000/1.5e-3 =  700000000 =  7e8
-             *   1200000/1.5e-3 =  800000000 =  8e8
-             *   1500000/1.5e-3 = 1000000000 = 10e8
-             */
-            // parcelsPerSecond 337560338; //50MPa average parcel mass = 3.6e-12
-            // parcelsPerSecond 493584654; //100MPa average parcel mass = 3.6e-12
+            dInner          0e-6;
+            dOuter          450.0e-6;
+            hCylinder       180.0e-6;
+            offsetCylinder  0.0e-6;
+            position          (0.001 0.0 0.0);
+            direction       (1 0 0);
             parcelsPerSecond 700000000; //150MPa average parcel mass = 3.6e-12
 
              #include "$FOAM_CASE/constant/volumeFlowRateProfile_p150.foam"
-             //#include "$FOAM_CASE/constant/volumeFlowRateProfile_07ms_p150.foam"
 
              /* theta = half cone angle
              *

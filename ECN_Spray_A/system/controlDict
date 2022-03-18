@@ -80,9 +80,7 @@ libs
         "libchemistryModel_DLB.so"
         "libODE_DLB.so"
         "$FOAM_CASE/constant/foam_mech/libc_pyjac.so"
-        // "libspraySubmodels_pex.so"
         "libconeCylinderInjection.so"
-        // "libmixtureFraction.so"
 );
 
 
@@ -100,20 +98,9 @@ functions
         writeInterval   5e-8;
     }
 
-    // Qdot
-    // {
-    //     functionObjectLibs ("libfieldFunctionObjects.so");
-    //     type            Qdot;
-    //     executeControl  adjustableRunTime;
-    //     executeInterval 5e-5;
-    //     writeControl    adjustableRunTime;
-    //     writeInterval   $writeInterval;
-    // }
-
     Integral_Qdot
     {
         libs            ("libfieldFunctionObjects.so");   // SHOULD BE THE SAME AS functionObjectLibs
-        //functionObjectLibs ("libfieldFunctionObjects.so");
         type            volFieldValue;
         // Mandatory entries (runtime modifiable)
         fields          (Qdot);
@@ -125,17 +112,6 @@ functions
         writeControl    adjustableRunTime;
         writeInterval   $writeInterval;
     }
-
-    // Z
-    // {
-    //     // functionObjectLibs ("libmixtureFraction.so"); //("libfieldFunctionObjects_pex.so");
-    //     functionObjectLibs ("libmixtureFraction.so");
-    //     type         Z;
-    //     executeControl  adjustableRunTime;
-    //     executeInterval 1e-6;
-    //     writeControl    adjustableRunTime;
-    //     writeInterval   $writeInterval;
-    // }
 
     fieldAverages
     {
@@ -170,13 +146,6 @@ functions
             }
 
             C12H26
-            {
-                mean        on;
-                prime2Mean  on;
-                base        time;
-            }
-
-            Z
             {
                 mean        on;
                 prime2Mean  on;

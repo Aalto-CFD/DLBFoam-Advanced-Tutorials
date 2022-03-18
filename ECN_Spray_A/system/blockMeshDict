@@ -81,28 +81,6 @@ edges
 
 boundary
 (
-    // inlet
-    // {
-    //     type patch;
-    //     faces
-    //     (
-    //         (0 1 2 3)
-    //     );
-    // }
-
-    // outlet
-    // {
-    //     type patch;
-    //     faces
-    //     (
-    //         (11 10 9 8)
-    //         (8 12 15 11)
-    //         (8 9 13 12)
-    //         (14 13 9 10)
-    //         (15 14 10 11)
-    //     );
-    // }
-
     walls
     {
         type wall;
