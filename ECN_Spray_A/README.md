@@ -1,6 +1,6 @@
 # ECN Spray A
 
-This is a demonstration of the capabilities of the **DLBFoam** on the well-known spray combustion test case [ENC Spray A](https://ecn.sandia.gov/diesel-spray-combustion/target-condition/spray-ab/) experimental setup, published in Ref. [[1]](#Morev2022)
+This is a demonstration of the capabilities of the **DLBFoam** on the well-known spray combustion test case [ENC Spray A](https://ecn.sandia.gov/diesel-spray-combustion/target-condition/spray-ab/) experimental setup, published in Ref. [[1]](#Morev2022). Various discussions concerning the numerical modeling and validation are originated from the Authors' works in Refs. [[2]](#Wehrfritz2016) and [[3]](#Kahila2019).
 
 ## Case description
 
@@ -26,11 +26,11 @@ The computational domain depicts a cylinder that has a volume equivalent to the 
 A customized model for spray injection sub-model has been implemented which extends the cone disc injection (i.e. 2D surface) into a 3D model. 
 In the customized model, computational Lagrangian parcels are randomly injected from cylinder of fixed height. The parameters for position, direction, cone angles, and disc inner and outer diameters are all preserved for the new model, while the parameters hCylinder and offsetCylinder are required to set the cylinder height and offset from injector position. Therefore, instead of injecting parcels over a disc (i.e. 2D surface), they are introduced randomly within a 3D finite volume cylinder.
 
-More information can be found from [ConeCylinderInjection repository on Github](https://github.com/Aalto-CFD/ConeCylinderInjection), as well as Ref. [[2]](#Gadalla2020)
+More information can be found from [ConeCylinderInjection repository on Github](https://github.com/Aalto-CFD/ConeCylinderInjection), as well as in Ref. [[4]](#Gadalla2020)
 
 ### Chemistry
 
-A chemical kinetics mechanism developed by Yao et al [[3]](#Yao2016), involving 54 species and 269 reactions, is used. Such a mechanism is compiled for the use with DLBFoam.
+A chemical kinetics mechanism developed by Yao et al [[5]](#Yao2016), involving 54 species and 269 reactions, is used. Such a mechanism is compiled for the use with DLBFoam.
 
 ## Execution
 
@@ -62,11 +62,17 @@ The ECN Spray A case in this repository was used to benchmark and validate DLBFo
 <a id="Morev2022">[1]</a>
 I. Morev, B. Tekgül, M. Gadalla, A. Shahanaghi, J. Kannan, S. Karimkashi, O. Kaario, V. Vuorinen, Fast reactive flow simulations using analytical Jacobian and dynamic load balancing in OpenFOAM, [doi:10.1063/5.0077437](https://doi.org/10.1063/5.0077437) (2022).
 
-<a id="Gadalla2020">[2]</a> 
+<a id="Wehrfritz2016">[2]</a>
+A. Wehrfritz, O. Kaario, V. Vuorinen, B. Somers, Large Eddy Simulation of n-dodecane spray flames using Flamelet Generated Manifolds, [doi:10.1016/j.combustflame.2016.02.019](https://doi.org/10.1016/j.combustflame.2016.02.019) (2016).
+
+<a id="Kahila2019">[3]</a>
+H. Kahila, A. Wehrfritz, O. Kaario, V. Vuorinen, Large-eddy simulation of dual-fuel ignition: Diesel spray injection into a lean methane-air mixture, [10.1016/j.combustflame.2018.10.014](https://doi.org/10.1016/j.combustflame.2018.10.014) (2019).
+
+<a id="Gadalla2020">[4]</a> 
 M. Gadalla, J. Kannan, B. Tekgül, S. Karimkashi, O. Kaario, V. Vuorinen.
 Large-Eddy Simulation of ECN Spray A: Sensitivity Study on Modeling
 Assumptions. Energies. 13(13):3360.
 [doi:10.3390/en13133360](https://doi.org/10.3390/en13133360) (2020).
 
-<a id="Yao2016">[3]</a>
+<a id="Yao2016">[5]</a>
 T. Yao, Y. Pei, B. J. Zhong, S. Som, T. Lu, K. H. Luo, A compact skeletal mechanism for n-dodecane with optimized semi-global low-temperature chemistry for diesel engine simulations, Fuel 191, 339–349, [doi:10.1016/j.fuel.2016.11.083](https://doi.org/10.1016/j.fuel.2016.11.083) (2017) .
