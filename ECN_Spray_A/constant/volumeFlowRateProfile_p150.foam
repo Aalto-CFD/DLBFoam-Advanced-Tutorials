@@ -7,8 +7,8 @@
 \*---------------------------------------------------------------------------*/
 
 massTotal       15.4972e-6;
-outerDiameter   89.4000e-6;
-innerDiameter   0.0;
+dOuter          89.4000e-6;
+dInner          0.0;
 Cd              constant 0.9;
 duration        6.1000e-3;
 flowRateProfile table

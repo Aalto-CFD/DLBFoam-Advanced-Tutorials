@@ -86,8 +86,8 @@ subModels
             parcelBasisType mass;
             injectionMethod cylinder;
             flowType        flowRateAndDischarge;
-            dInner          0e-6;
-            dOuter          450.0e-6;
+            dInnerCylinder  0e-6;
+            dOuterCylinder  450.0e-6;
             hCylinder       180.0e-6;
             offsetCylinder  0.0e-6;
             position          (0.001 0.0 0.0);
