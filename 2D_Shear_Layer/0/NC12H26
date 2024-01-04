@@ -31,7 +31,7 @@ internalField  #codeStream
         scalarField NC12H26(mesh.nCells());
         scalar NC12H26_i = 0.0;
 
-        scalar A = 0.1;
+        scalar A = 0.25;
         scalar L = 0.0015;
         scalar ro = L/20;
         scalar B = 5;
