@@ -11,7 +11,7 @@ FoamFile
     format      ascii;
     class       volScalarField;
     location    "0";
-    object      CH4;
+    object      CO2;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -28,10 +28,10 @@ internalField  #codeStream
         const vectorField& CC = mesh.C(); //cell center
         
          
-        scalarField CH4(mesh.nCells());
-        scalar CH4_i = 0.020;
+        scalarField CO2(mesh.nCells());
+        scalar CO2_i = 0.091;
 
-        scalar A = 0.005;
+        scalar A = 0.023;
         scalar L = 0.0015;
         scalar ro = L/20;
         scalar B = 5;
@@ -43,11 +43,11 @@ internalField  #codeStream
             
         	scalar y = CC[cellI].y(); 
             
-            CH4[cellI] = CH4_i - A * 0.5 * (1-tanh(B*(mag(y-L/2)/ro - ro/mag(y-L/2))));
+            CO2[cellI] = CO2_i - A * 0.5 * (1-tanh(B*(mag(y-L/2)/ro - ro/mag(y-L/2))));
             
         }
         
-        writeEntry(os,"",CH4); 
+        writeEntry(os,"",CO2); 
     #};
 
     //! Optional:

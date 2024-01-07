@@ -29,9 +29,9 @@ internalField  #codeStream
         
          
         scalarField O2(mesh.nCells());
-        scalar O2_i = 0.23;
+        scalar O2_i = 0.166;
 
-        scalar A = 0.03;
+        scalar A = 0.042;
         scalar L = 0.0015;
         scalar ro = L/20;
         scalar B = 5;
